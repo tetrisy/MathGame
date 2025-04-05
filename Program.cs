@@ -177,7 +177,7 @@ string DivisionMode()
     Console.Clear();
     Console.WriteLine("========== MATH  GAME ==========");
     Console.WriteLine("=                              =");
-    Console.WriteLine($"           {number1} / {number2} = {result}  ");
+    Console.WriteLine($"           {number1} / {number2} = ?  ");
     Console.WriteLine("=                              =");
     Console.WriteLine("================================\n");
     Console.Write("Enter you answer here: ");
