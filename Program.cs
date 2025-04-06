@@ -1,11 +1,13 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 
+using System.Numerics;
 using System.Runtime.InteropServices.Marshalling;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 Console.ForegroundColor = ConsoleColor.White;
 
 int gamesCount = 0;
+string[] previousGames = new string[100];
 
 while (true)
 {
@@ -64,22 +66,23 @@ void RunGameMode(int choice)
     switch (choice)
     {
         case 1:
-            AdditionMode();
+            previousGames[gamesCount] = AdditionMode();
             gamesCount++;
             break;
         case 2:
-            SubtractionMode();
+            previousGames[gamesCount] = SubtractionMode();
             gamesCount++;
             break;
         case 3:
-            DivisionMode();
+            previousGames[gamesCount] = DivisionMode();
             gamesCount++;
             break;
         case 4:
-            MultiplicationMode();
+            previousGames[gamesCount] = MultiplicationMode();
             gamesCount++;
             break;
         case 5:
+            displayPreviousGames();
             break;
     }
 };
@@ -117,7 +120,7 @@ string AdditionMode()
     System.Threading.Thread.Sleep(3000);
 
     Console.Clear();
-    return null;
+    return $"{number1} + {number2} = ? | Your answer:  {answer} | Correct answer: {result}";
 };
 
 string SubtractionMode()
@@ -153,7 +156,7 @@ string SubtractionMode()
     System.Threading.Thread.Sleep(3000);
 
     Console.Clear();
-    return null;
+    return $"{number1} - {number2} = ? | Your answer:  {answer} | Correct answer: {result}";
 };
 
 string DivisionMode()
@@ -196,25 +199,24 @@ string DivisionMode()
         Console.ForegroundColor = ConsoleColor.White;
     }
 
-    System.Threading.Thread.Sleep(1000);
+    System.Threading.Thread.Sleep(3000);
 
     Console.Clear();
-    return null;
+    return $"{number1} / {number2} = ? | Your answer:  {answer} | Correct answer: {result}";
 };
 
 string MultiplicationMode()
 {
     Random number = new Random();
 
-    int number1 = number.Next(101);
-    int number2 = number.Next(101);
+    int number1 = number.Next(11);
+    int number2 = number.Next(11);
     int result = number1 * number2;
-    string operationSign = "/";
 
     Console.Clear();
     Console.WriteLine("========== MATH  GAME ==========");
     Console.WriteLine("=                              =");
-    Console.WriteLine($"           {number1} / {number2} = ?  ");
+    Console.WriteLine($"           {number1} * {number2} = ?  ");
     Console.WriteLine("=                              =");
     Console.WriteLine("================================\n");
     Console.Write("Enter you answer here: ");
@@ -236,5 +238,26 @@ string MultiplicationMode()
     System.Threading.Thread.Sleep(3000);
 
     Console.Clear();
-    return null;
+    return $"{number1} * {number2} = ? | Your answer:  {answer} | Correct answer: {result}";
+};
+
+void displayPreviousGames()
+{
+    Console.Clear();
+    Console.WriteLine("========== MATH  GAME ==========");
+    Console.WriteLine("=                              =");
+    Console.WriteLine("=        PREVIOUS GAMES        =");
+    Console.WriteLine("=                              =");
+    Console.WriteLine("================================\n");
+
+
+    for (int i = 0; i < gamesCount; i++)
+    {
+        Console.WriteLine(previousGames[i]);
+        Console.WriteLine("");
+    }
+
+    Console.Write("Press any key to go back.");
+    Console.ReadKey();
+    Console.Clear();
 };
