@@ -25,7 +25,6 @@ while (true)
 void DisplayMenu()
 {
     Console.WriteLine("========== MATH  GAME ==========");
-    Console.WriteLine($"=        GAMES PLAYED: {gamesCount}       =");
     Console.WriteLine("=                              =");
     Console.WriteLine("=            OPTIONS           =");
     Console.WriteLine("=                              =");
@@ -39,6 +38,7 @@ void DisplayMenu()
     Console.WriteLine("================================\n");
 };
 
+// This method prompts user which gamemode he wants to play
 int GetPlayerChoice()
 {
     int choice = -1;
@@ -61,25 +61,40 @@ int GetPlayerChoice()
     return choice;
 };
 
+
+// This method run selcted game mode by user
 void RunGameMode(int choice)
 {
+    MathOperation gameMode;
     switch (choice)
     {
         case 1:
-            previousGames[gamesCount] = AdditionMode();
-            gamesCount++;
+            gameMode = MathOperation.Addition;
+            for (int i = 0; i < 3; i++)
+            {
+                PlayGame(gameMode);
+            };
             break;
         case 2:
-            previousGames[gamesCount] = SubtractionMode();
-            gamesCount++;
+            gameMode = MathOperation.Subtraction;
+            for (int i = 0; i < 3; i++)
+            {
+                PlayGame(gameMode);
+            };
             break;
         case 3:
-            previousGames[gamesCount] = DivisionMode();
-            gamesCount++;
+            gameMode = MathOperation.Division;
+            for (int i = 0; i < 3; i++)
+            {
+                PlayGame(gameMode);
+            };
             break;
         case 4:
-            previousGames[gamesCount] = MultiplicationMode();
-            gamesCount++;
+            gameMode = MathOperation.Multiplication;
+            for (int i = 0; i < 3; i++)
+            {
+                PlayGame(gameMode);
+            };
             break;
         case 5:
             displayPreviousGames();
@@ -87,100 +102,52 @@ void RunGameMode(int choice)
     }
 };
 
-string AdditionMode()
+// Method containing game logic for every mode
+void PlayGame(MathOperation mode)
 {
     Random number = new Random();
-
-    int number1 = number.Next(101);
-    int number2 = number.Next(101);
-    int result = number1 + number2;
-
-    Console.Clear();
-    Console.WriteLine("========== MATH  GAME ==========");
-    Console.WriteLine("=                              =");
-    Console.WriteLine($"           {number1} + {number2} = ?  ");
-    Console.WriteLine("=                              =");
-    Console.WriteLine("================================\n");
-    Console.Write("Enter you answer here: ");
-    int answer = Convert.ToInt32(Console.ReadLine());
-
-    if (answer == result)
-    {
-        Console.ForegroundColor = ConsoleColor.Green;
-        Console.WriteLine("Correct!");
-        Console.ForegroundColor = ConsoleColor.White;
-    }
-    else
-    {
-        Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine($"Wrong!");
-        Console.ForegroundColor = ConsoleColor.White;
-    }
-
-    System.Threading.Thread.Sleep(3000);
-
-    Console.Clear();
-    return $"{number1} + {number2} = ? | Your answer:  {answer} | Correct answer: {result}";
-};
-
-string SubtractionMode()
-{
-    Random number = new Random();
-
-    int number1 = number.Next(101);
-    int number2 = number.Next(101);
-    int result = number1 - number2;
-
-    Console.Clear();
-    Console.WriteLine("========== MATH  GAME ==========");
-    Console.WriteLine("=                              =");
-    Console.WriteLine($"           {number1} - {number2} = ?  ");
-    Console.WriteLine("=                              =");
-    Console.WriteLine("================================\n");
-    Console.Write("Enter you answer here: ");
-    int answer = Convert.ToInt32(Console.ReadLine());
-
-    if (answer == result)
-    {
-        Console.ForegroundColor = ConsoleColor.Green;
-        Console.WriteLine("Correct!");
-        Console.ForegroundColor = ConsoleColor.White;
-    }
-    else
-    {
-        Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine($"Wrong!");
-        Console.ForegroundColor = ConsoleColor.White;
-    }
-
-    System.Threading.Thread.Sleep(3000);
-
-    Console.Clear();
-    return $"{number1} - {number2} = ? | Your answer:  {answer} | Correct answer: {result}";
-};
-
-string DivisionMode()
-{
-    Random number = new Random();
-    int number1 = 0;
-    int number2 = 0;
-    float result = 1.31f;
     
-    while (result % 1 != 0)
+    int number1 = number.Next(101);
+    int number2 = number.Next(101);
+    float result = 0;
+    string operationSign = "";
+
+
+    switch (mode)
     {
-        number1 = number.Next(101);
-        number2 = number.Next(101);
-        while (number2 == 1)
-        {
-            number2 = number.Next(101);
-        };
-        result = (float)number1 / number2;
+        case MathOperation.Addition:
+            operationSign = "+";
+            result = number1 + number2;
+            break;
+        case MathOperation.Subtraction:
+            operationSign = "-";
+            result = number1 - number2;
+            break;
+        case MathOperation.Division:
+            operationSign = "/";
+            result = 1.31f;
+            // Checks if the outcome of generated numbers is an integer, if not it generates numbers again until it is
+            while (result % 1 != 0)
+            {
+                number1 = number.Next(101);
+                number2 = number.Next(101);
+                while (number2 == 1)
+                {
+                    number2 = number.Next(101);
+                };
+                result = (float)number1 / number2;
+            };
+            break;
+        case MathOperation.Multiplication:
+            operationSign = "*";
+            result = number1 * number2;
+            break;
     };
 
     Console.Clear();
     Console.WriteLine("========== MATH  GAME ==========");
     Console.WriteLine("=                              =");
-    Console.WriteLine($"           {number1} / {number2} = ?  ");
+    Console.WriteLine($"           {number1} {operationSign} {number2} = ?  ");
     Console.WriteLine("=                              =");
     Console.WriteLine("================================\n");
     Console.Write("Enter you answer here: ");
@@ -199,48 +166,16 @@ string DivisionMode()
         Console.ForegroundColor = ConsoleColor.White;
     }
 
-    System.Threading.Thread.Sleep(3000);
+    previousGames[gamesCount] = $"{number1} {operationSign} {number2} = ? | Your answer:  {answer} | Correct answer: {result}";
+    gamesCount++;
+
+    Console.WriteLine("Press any key to contionue to next question.");
+    Console.ReadKey();
 
     Console.Clear();
-    return $"{number1} / {number2} = ? | Your answer:  {answer} | Correct answer: {result}";
 };
 
-string MultiplicationMode()
-{
-    Random number = new Random();
-
-    int number1 = number.Next(11);
-    int number2 = number.Next(11);
-    int result = number1 * number2;
-
-    Console.Clear();
-    Console.WriteLine("========== MATH  GAME ==========");
-    Console.WriteLine("=                              =");
-    Console.WriteLine($"           {number1} * {number2} = ?  ");
-    Console.WriteLine("=                              =");
-    Console.WriteLine("================================\n");
-    Console.Write("Enter you answer here: ");
-    int answer = Convert.ToInt32(Console.ReadLine());
-
-    if (answer == result)
-    {
-        Console.ForegroundColor = ConsoleColor.Green;
-        Console.WriteLine("Correct!");
-        Console.ForegroundColor = ConsoleColor.White;
-    }
-    else
-    {
-        Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine($"Wrong!");
-        Console.ForegroundColor = ConsoleColor.White;
-    }
-
-    System.Threading.Thread.Sleep(3000);
-
-    Console.Clear();
-    return $"{number1} * {number2} = ? | Your answer:  {answer} | Correct answer: {result}";
-};
-
+// Method displays game history
 void displayPreviousGames()
 {
     Console.Clear();
@@ -261,3 +196,5 @@ void displayPreviousGames()
     Console.ReadKey();
     Console.Clear();
 };
+
+enum MathOperation { Addition,  Subtraction, Division, Multiplication };
