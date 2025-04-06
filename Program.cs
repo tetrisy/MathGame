@@ -38,6 +38,7 @@ void DisplayMenu()
     Console.WriteLine("================================\n");
 };
 
+
 // This method prompts user which gamemode he wants to play
 int GetPlayerChoice()
 {
@@ -70,30 +71,30 @@ void RunGameMode(int choice)
     {
         case 1:
             gameMode = MathOperation.Addition;
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 10; i++)
             {
-                PlayGame(gameMode);
+                PlayGame(gameMode, i);
             };
             break;
         case 2:
             gameMode = MathOperation.Subtraction;
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 10; i++)
             {
-                PlayGame(gameMode);
+                PlayGame(gameMode, i);
             };
             break;
         case 3:
             gameMode = MathOperation.Division;
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 10; i++)
             {
-                PlayGame(gameMode);
+                PlayGame(gameMode, i);
             };
             break;
         case 4:
             gameMode = MathOperation.Multiplication;
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 10; i++)
             {
-                PlayGame(gameMode);
+                PlayGame(gameMode, i);
             };
             break;
         case 5:
@@ -103,7 +104,7 @@ void RunGameMode(int choice)
 };
 
 // Method containing game logic for every mode
-void PlayGame(MathOperation mode)
+void PlayGame(MathOperation mode, int round)
 {
     Random number = new Random();
     
@@ -146,6 +147,7 @@ void PlayGame(MathOperation mode)
 
     Console.Clear();
     Console.WriteLine("========== MATH  GAME ==========");
+    Console.WriteLine($"           ROUND {round + 1}/10          ");
     Console.WriteLine("=                              =");
     Console.WriteLine($"           {number1} {operationSign} {number2} = ?  ");
     Console.WriteLine("=                              =");
