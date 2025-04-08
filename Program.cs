@@ -8,6 +8,7 @@ Console.ForegroundColor = ConsoleColor.White;
 
 int gamesCount = 0;
 string[] previousGames = new string[100];
+Difficulty levelOfDifficulty = Difficulty.EASY;
 
 while (true)
 {
@@ -25,6 +26,7 @@ while (true)
 void DisplayMenu()
 {
     Console.WriteLine("========== MATH  GAME ==========");
+    Console.WriteLine($"        DIFFICULTY: {levelOfDifficulty} ");
     Console.WriteLine("=                              =");
     Console.WriteLine("=            OPTIONS           =");
     Console.WriteLine("=                              =");
@@ -33,6 +35,7 @@ void DisplayMenu()
     Console.WriteLine("=         3. DIVISION          =");
     Console.WriteLine("=       4. MULTIPLICATION      =");
     Console.WriteLine("=      5. PREVIOUS RESULTS     =");
+    Console.WriteLine("=     6. CHANGE DIFFICULTY     =");
     Console.WriteLine("=                              =");
     Console.WriteLine("=           0. Quit            =");
     Console.WriteLine("================================\n");
@@ -44,15 +47,15 @@ int GetPlayerChoice()
 {
     int choice = -1;
     
-    while (choice < 0 || choice > 5)
+    while (choice < 0 || choice > 6)
     {
         Console.Write("Write a number to choose an option: ");
         choice = Convert.ToInt32(Console.ReadLine());
 
-        if (choice < 0 || choice > 5)
+        if (choice < 0 || choice > 6)
         {
             Console.WriteLine("");
-            Console.Write("You must choose typing a number between 0-4: ");
+            Console.Write("You must choose typing a number between 0-6: ");
             choice = Convert.ToInt32(Console.ReadLine());
             Console.Clear();
             DisplayMenu();
@@ -98,7 +101,10 @@ void RunGameMode(int choice)
             };
             break;
         case 5:
-            displayPreviousGames();
+            DisplayPreviousGames();
+            break;
+        case 6:
+            ChangeDifficulty();
             break;
     }
 };
@@ -107,9 +113,28 @@ void RunGameMode(int choice)
 void PlayGame(MathOperation mode, int round)
 {
     Random number = new Random();
+
+    int minNum = 0;
+    int maxNum = 0;
+
+    switch(levelOfDifficulty)
+    {
+        case Difficulty.EASY:
+            minNum = 1;
+            maxNum = 11;
+            break;
+        case Difficulty.MEDIUM:
+            minNum = 11;
+            maxNum = 101;
+            break;
+        case Difficulty.HARD:
+            minNum = 101;
+            maxNum = 1001;
+            break; 
+    };
     
-    int number1 = number.Next(101);
-    int number2 = number.Next(101);
+    int number1 = number.Next(minNum, maxNum);
+    int number2 = number.Next(minNum, maxNum);
     float result = 0;
     string operationSign = "";
 
@@ -128,13 +153,13 @@ void PlayGame(MathOperation mode, int round)
             operationSign = "/";
             result = 1.31f;
             // Checks if the outcome of generated numbers is an integer, if not it generates numbers again until it is
-            while (result % 1 != 0)
+            while (result % 1  != 0)
             {
-                number1 = number.Next(101);
-                number2 = number.Next(101);
+                number1 = number.Next(minNum, maxNum);
+                number2 = number.Next(minNum, maxNum);
                 while (number2 == 1)
                 {
-                    number2 = number.Next(101);
+                    number2 = number.Next(minNum, maxNum);
                 };
                 result = (float)number1 / number2;
             };
@@ -178,7 +203,7 @@ void PlayGame(MathOperation mode, int round)
 };
 
 // Method displays game history
-void displayPreviousGames()
+void DisplayPreviousGames()
 {
     Console.Clear();
     Console.WriteLine("========== MATH  GAME ==========");
@@ -199,4 +224,37 @@ void displayPreviousGames()
     Console.Clear();
 };
 
+void ChangeDifficulty()
+{
+    Console.Clear();
+    Console.WriteLine("========== MATH  GAME ==========");
+    Console.WriteLine("=                              =");
+    Console.WriteLine("=      CHOOSE DIFFICULTY       =");
+    Console.WriteLine("=                              =");
+    Console.WriteLine("=           1. EASY            =");
+    Console.WriteLine("=          2. MEDIUM           =");
+    Console.WriteLine("=           3. HARD            =");
+    Console.WriteLine("=                              =");
+    Console.WriteLine("================================\n");
+
+    Console.Write("Type 1-3 to choose level of difficulty: ");
+    int choice = Convert.ToInt32(Console.ReadLine());
+
+    switch (choice)
+    {
+        case 1:
+            levelOfDifficulty = Difficulty.EASY;
+            break;
+        case 2:
+            levelOfDifficulty = Difficulty.MEDIUM;
+            break;
+        case 3:
+            levelOfDifficulty = Difficulty.HARD;
+            break;
+    };
+
+    Console.Clear();
+};
+ 
 enum MathOperation { Addition,  Subtraction, Division, Multiplication };
+enum Difficulty { EASY, MEDIUM, HARD };
