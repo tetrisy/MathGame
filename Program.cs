@@ -26,8 +26,7 @@ while (true)
 void DisplayMenu()
 {
     Console.WriteLine("========== MATH  GAME ==========");
-    Console.Write($"=        DIFFICULTY: {levelOfDifficulty} ");
-    Console.WriteLine($"{ "=", 30}");
+    Console.WriteLine($"=        DIFFICULTY: {levelOfDifficulty} ");
     Console.WriteLine("=                              =");
     Console.WriteLine("=            OPTIONS           =");
     Console.WriteLine("=                              =");
@@ -51,7 +50,7 @@ int GetPlayerChoice()
     
     while (choice < 0 || choice > 6)
     {
-        Console.Write("Write a number to choose an option: ");
+        Console.Write("Type a number to choose an option: ");
         choice = Convert.ToInt32(Console.ReadLine());
 
         if (choice < 0 || choice > 6)
