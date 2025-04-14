@@ -26,7 +26,8 @@ while (true)
 void DisplayMenu()
 {
     Console.WriteLine("========== MATH  GAME ==========");
-    Console.WriteLine($"        DIFFICULTY: {levelOfDifficulty} ");
+    Console.Write($"=        DIFFICULTY: {levelOfDifficulty} ");
+    Console.WriteLine($"{ "=", 30}");
     Console.WriteLine("=                              =");
     Console.WriteLine("=            OPTIONS           =");
     Console.WriteLine("=                              =");
@@ -34,8 +35,9 @@ void DisplayMenu()
     Console.WriteLine("=        2. SUBTRACTION        =");
     Console.WriteLine("=         3. DIVISION          =");
     Console.WriteLine("=       4. MULTIPLICATION      =");
-    Console.WriteLine("=      5. PREVIOUS RESULTS     =");
-    Console.WriteLine("=     6. CHANGE DIFFICULTY     =");
+    Console.WriteLine("=        5. RANDOM GAME        =");
+    Console.WriteLine("=      6. PREVIOUS RESULTS     =");
+    Console.WriteLine("=     7. CHANGE DIFFICULTY     =");
     Console.WriteLine("=                              =");
     Console.WriteLine("=           0. Quit            =");
     Console.WriteLine("================================\n");
@@ -101,9 +103,34 @@ void RunGameMode(int choice)
             };
             break;
         case 5:
-            DisplayPreviousGames();
+            gameMode = MathOperation.Multiplication;
+            for (int i = 0; i < 10; i++)
+            {
+                Random number = new Random();
+
+                int mode = number.Next(1, 5);
+                switch (mode)
+                {
+                    case 1:
+                        gameMode = MathOperation.Addition;
+                        break;
+                    case 2:
+                        gameMode = MathOperation.Subtraction;
+                        break;
+                    case 3:
+                        gameMode = MathOperation.Division;
+                        break;
+                    case 4:
+                        gameMode = MathOperation.Multiplication;
+                        break;
+                }
+                PlayGame(gameMode, i);
+            };
             break;
         case 6:
+            DisplayPreviousGames();
+            break;
+        case 7:
             ChangeDifficulty();
             break;
     }
@@ -256,5 +283,5 @@ void ChangeDifficulty()
     Console.Clear();
 };
  
-enum MathOperation { Addition,  Subtraction, Division, Multiplication };
+enum MathOperation { Addition,  Subtraction, Division, Multiplication, Random };
 enum Difficulty { EASY, MEDIUM, HARD };
